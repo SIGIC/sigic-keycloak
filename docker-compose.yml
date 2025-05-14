@@ -1,6 +1,5 @@
 
 services:
-  # Nginx is serving django static and media files and proxies to django and geonode
   nginx:
     build:
       context: ./docker/nginx
@@ -12,8 +11,7 @@ services:
       - "443"
     volumes:
       - nginx-confd:/etc/nginx
-      - nginx-certificates:/geonode-certificates
-      - statics:/mnt/volumes/statics
+      - nginx-certificates:/certificates
     restart: unless-stopped
 
   # Gets and installs letsencrypt certificates
@@ -24,7 +22,7 @@ services:
     env_file:
       - .env
     volumes:
-      - nginx-certificates:/geonode-certificates
+      - nginx-certificates:/certificates
     restart: unless-stopped
 
   keycloak:
