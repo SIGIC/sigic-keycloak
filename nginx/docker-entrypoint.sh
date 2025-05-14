@@ -44,7 +44,7 @@ echo "Enabling or not https configuration"
 if [ -z "${KC_HOSTNAME}" ]; then
         echo "" > /etc/nginx/nginx.https.enabled.conf
 else
-        ln -sf /etc/nginx/nginx.https.available.conf /etc/nginx/nginx.https.enabled.conf
+        ln -sf /etc/nginx/nginx.https.available.conf cd nginx.https.enabled.conf
 fi
 
 echo "Loading nginx autoreloader"
