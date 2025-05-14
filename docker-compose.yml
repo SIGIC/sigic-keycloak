@@ -10,9 +10,9 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx-html:/usr/share/nginx/html
       - nginx-certs:/etc/nginx/certs  # Volumen para los certificados SSL
       - nginx-vhost:/etc/nginx/vhost.d  # Volumen para la configuración de vhosts
-      - /usr/share/nginx/html
     networks:
       - proxy
     environment:
@@ -39,6 +39,8 @@ services:
       - ACME_CA_URI=${ACME_CA_URI:-https://acme-v02.api.letsencrypt.org/directory}  # Usar staging si está definido
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx-html:/usr/share/nginx/html
+      - nginx-acme:/etc/acme.sh
       - nginx-certs:/etc/nginx/certs  # Volumen para los certificados
       - nginx-vhost:/etc/nginx/vhost.d  # Volumen para la configuración de vhosts
     networks:
@@ -76,5 +78,7 @@ networks:
   proxy:
 
 volumes:
+  nginx-html:
+  nginx-acme:
   nginx-certs:   # Volumen para los certificados SSL
   nginx-vhost:   # Volumen para la configuración de vhosts
