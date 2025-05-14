@@ -1,29 +1,30 @@
 
 services:
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    ports:
-      - "80"
-      - "443"
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    environment:
+      - DEFAULT_HOST=default.local
     volumes:
-      - nginx-confd:/etc/nginx
-      - nginx-certificates:/certificates
-    restart: unless-stopped
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+    ports:
+      - "80:80"
+      - "443:443"
 
   # Gets and installs letsencrypt certificates
   letsencrypt:
-    build:
-      context: ./letsencrypt
-      dockerfile: Dockerfile
-    env_file:
-      - .env
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-letsencrypt
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
     volumes:
-      - nginx-certificates:/certificates
-    restart: unless-stopped
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+    depends_on:
+      - nginx-proxy
 
   keycloak:
     build:
@@ -43,6 +44,8 @@ services:
       - KC_HOSTNAME=${KC_HOSTNAME}
       - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
       - JAVA_OPTS=${JAVA_OPTS}
+      - VIRTUAL_HOST=${KC_HOSTNAME}
+      - VIRTUAL_PORT=8080
 
 volumes:
   nginx-confd:
