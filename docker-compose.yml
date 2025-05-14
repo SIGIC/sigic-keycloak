@@ -44,9 +44,6 @@ services:
       - KC_HOSTNAME=${KC_HOSTNAME}
       - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
       - JAVA_OPTS=${JAVA_OPTS}
-    networks:
-      - proxy
-      - internal
 
 volumes:
   nginx-confd:
