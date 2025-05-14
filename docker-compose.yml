@@ -34,8 +34,8 @@ services:
     build:
       context: ./keycloak
       dockerfile: Dockerfile
-    # command: start --optimized
-    command: start-dev
+    command: start --optimized
+    # command: start-dev
     restart: unless-stopped
     expose:
       - "8080"
@@ -46,6 +46,8 @@ services:
       - KC_DB_USERNAME=${KC_DB_USERNAME}
       - KC_DB_PASSWORD=${KC_DB_PASSWORD}
       - KC_HOSTNAME=${KC_HOSTNAME}
+      - KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT:-true}
+      - KC_PROXY_HEADERS=${KC_PROXY_HEADERS:-xforwarded}
       - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
       - JAVA_OPTS=${JAVA_OPTS}
       - VIRTUAL_HOST=${KC_HOSTNAME}
