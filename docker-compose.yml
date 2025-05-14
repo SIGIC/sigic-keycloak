@@ -12,6 +12,7 @@ services:
       - nginx-html:/usr/share/nginx/html
       - nginx-certs:/etc/nginx/certs
       - nginx-vhost:/etc/nginx/vhost.d
+      - ./nginx/default.headers:/etc/nginx/vhost.d/default.headers:ro
     networks:
       - proxy
     environment:
