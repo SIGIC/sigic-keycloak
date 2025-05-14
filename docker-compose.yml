@@ -4,12 +4,13 @@ services:
     image: nginx:${NGINX_VERSION:-latest}
     environment:
       KEYCLOAK_DOMAIN: ${KC_HOSTNAME}
-    mem_limit: 100m
     container_name: nginx
     volumes:
       - ./nginx/templates:/etc/nginx/templates
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
+      - ./nginx/entrypoint.sh:/etc/nginx/entrypoint.sh
+    entrypoint: /etc/nginx/entrypoint.sh
     ports:
       - 80:80
       - 443:443
@@ -55,17 +56,6 @@ services:
       - KC_HOSTNAME=${KC_HOSTNAME}
       - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
       - JAVA_OPTS=${JAVA_OPTS}
-      - VIRTUAL_HOST=${KC_HOSTNAME}
-      - VIRTUAL_PORT=8080
-      - PROXY_ADDRESS_FORWARDING=true
-    labels:
-      - "traefik.enable=false"
-      - "com.github.nginxproxy.acme.ssl=true"
-      - "com.github.nginxproxy.acme.domain=auth.midominio.com"
-      - "com.github.nginxproxy.acme.email=admin@tudominio.com"
-      - "com.github.nginxproxy.acme.nginx_proxy_container=nginx-proxy"
-      - "com.github.nginxproxy.nginx_proxy=true"
-      - "com.github.nginxproxy.nginx_proxy.ssl=true"
     networks:
       - proxy
       - internal
