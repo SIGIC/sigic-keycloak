@@ -17,10 +17,10 @@ set +e
 # We run the command
 if [ "$LETSENCRYPT_MODE" == "staging" ]; then
     printf "\nTrying to get STAGING certificate\n"
-    certbot --config-dir "/certificates/$LETSENCRYPT_MODE" certonly --webroot -w "/geonode-certificates" -d "$KC_HOSTNAME" -m "admin@$KC_HOSTNAME" --agree-tos --non-interactive --test-cert
+    certbot --config-dir "/certificates/$LETSENCRYPT_MODE" certonly --webroot -w "/certificates" -d "$KC_HOSTNAME" -m "admin@$KC_HOSTNAME" --agree-tos --non-interactive --test-cert
 elif [ "$LETSENCRYPT_MODE" == "production" ]; then
     printf "\nTrying to get PRODUCTION certificate\n"
-    certbot --config-dir "/certificates/$LETSENCRYPT_MODE" certonly --webroot -w "/geonode-certificates" -d "$KC_HOSTNAME" -m "admin@$KC_HOSTNAME" --agree-tos --non-interactive --server https://acme-v02.api.letsencrypt.org/directory
+    certbot --config-dir "/certificates/$LETSENCRYPT_MODE" certonly --webroot -w "/certificates" -d "$KC_HOSTNAME" -m "admin@$KC_HOSTNAME" --agree-tos --non-interactive --server https://acme-v02.api.letsencrypt.org/directory
 elif [ "$LETSENCRYPT_MODE" == "disabled" ]; then
     printf "\nNot trying to get certificate (because LETSENCRYPT_MODE variable is set to disabled) - and stop container\n"
     exit 0
