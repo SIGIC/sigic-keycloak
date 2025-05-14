@@ -36,7 +36,7 @@ fi
 defined_envs=$(printf '${%s} ' $(env | cut -d= -f1))
 
 echo "Replacing environment variables"
-# envsubst "$defined_envs" < /etc/nginx/nginx.conf.envsubst > /etc/nginx/nginx.conf
+envsubst "$defined_envs" < /etc/nginx/nginx.conf.envsubst > /etc/nginx/nginx.conf
 envsubst "$defined_envs" < /etc/nginx/nginx.https.available.conf.envsubst > /etc/nginx/nginx.https.available.conf
 envsubst "$defined_envs" < /etc/nginx/sites-enabled/geonode.conf.envsubst > /etc/nginx/sites-enabled/geonode.conf
 
@@ -44,7 +44,7 @@ echo "Enabling or not https configuration"
 if [ -z "${KC_HOSTNAME}" ]; then
         echo "" > /etc/nginx/nginx.https.enabled.conf
 else
-        ln -sf /etc/nginx/nginx.https.available.conf cd nginx.https.enabled.conf
+        ln -sf /etc/nginx/nginx.https.available.conf /etc/nginx/nginx.https.enabled.conf
 fi
 
 echo "Loading nginx autoreloader"
