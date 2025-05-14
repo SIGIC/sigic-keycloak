@@ -10,4 +10,4 @@ COPY keycloak/theme/sigic /opt/keycloak/themes/sigic
 RUN /opt/keycloak/bin/kc.sh build
 
 USER keycloak
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh start"]
