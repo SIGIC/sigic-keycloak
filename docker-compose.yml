@@ -9,12 +9,22 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /etc/nginx/certs
-      - /etc/nginx/vhost.d
-      - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs  # Volumen para los certificados SSL
+      - nginx-vhost:/etc/nginx/vhost.d  # Volumen para la configuración de vhosts
+      - /usr/share/nginx/html
     networks:
       - proxy
+    environment:
+      - DEFAULT_EMAIL=admin@${KC_HOSTNAME}  # Correo para Let's Encrypt
+    labels:
+      - "traefik.enable=false"  # Desactiva Traefik si lo estás usando
+      - "com.github.nginxproxy.nginx-proxy=true"  # Habilita nginx-proxy
+      - "com.github.nginxproxy.nginx-proxy.nginx_default_host=${KC_HOSTNAME}"  # Host por defecto en Nginx
+      - "VIRTUAL_HOST=${KC_HOSTNAME}"  # Dominio de Keycloak
+      - "VIRTUAL_PORT=8080"  # Puerto donde Keycloak se está ejecutando
+      - "LETSENCRYPT_HOST=${KC_HOSTNAME}"  # Habilita el certificado de Let's Encrypt
+      - "LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}"  # Correo de registro para Let's Encrypt
 
   acme-companion:
     image: nginxproxy/acme-companion
@@ -23,61 +33,46 @@ services:
       - nginx-proxy
     restart: unless-stopped
     environment:
-      NGINX_PROXY_CONTAINER: nginx-proxy
-      DEFAULT_EMAIL: admin@${DOMAIN}
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+      - DEFAULT_EMAIL=admin@${KC_HOSTNAME}
+      - ACME_CA_URI=${ACME_CA_URI:-https://acme-v02.api.letsencrypt.org/directory}  # Usar staging si está definido
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/nginx/certs
-      - /etc/nginx/vhost.d
-      - /usr/share/nginx/html
+      - nginx-certs:/etc/nginx/certs  # Volumen para los certificados
+      - nginx-vhost:/etc/nginx/vhost.d  # Volumen para la configuración de vhosts
     networks:
       - proxy
-    # Solo se ejecuta si ENABLE_HTTPS=true
-    deploy:
-      replicas: ${ENABLE_HTTPS:-false}
 
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0
+    build:
+      context: ./keycloak
     command: start --optimized
     restart: unless-stopped
-    environment:
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_DB: postgres
-      KC_DB_URL_HOST: keycloak-db
-      KC_DB_URL_DATABASE: keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-      KC_HOSTNAME: ${DOMAIN}
     expose:
       - "8080"
-    labels:
-      - "traefik.enable=false"
-      - "com.github.nginxproxy.nginx-proxy=true"
-      - "com.github.nginxproxy.nginx-proxy.nginx_default_host=${DOMAIN}"
-      - "VIRTUAL_HOST=${DOMAIN}"
-      - "VIRTUAL_PORT=8080"
-      - "LETSENCRYPT_HOST=${ENABLE_HTTPS:-false}"
-      - "LETSENCRYPT_HOST=${DOMAIN}"
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=${KC_DB_URL_HOST}
+      - KC_DB_URL_DATABASE=${KC_DB_URL_DATABASE}
+      - KC_DB_USERNAME=${KC_DB_USERNAME}
+      - KC_DB_PASSWORD=${KC_DB_PASSWORD}
+      - KC_HOSTNAME=${KC_HOSTNAME}
+      - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
+      - KC_PROXY=${KC_PROXY}
+      - KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT}
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      - JAVA_OPTS=${JAVA_OPTS}
     networks:
       - proxy
       - internal
-
-  keycloak-db:
-    image: postgres:15
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-    volumes:
-      - keycloak_data:/var/lib/postgresql/data
-    networks:
-      - internal
-
-volumes:
-  keycloak_data:
 
 networks:
   internal:
   proxy:
+
+volumes:
+  nginx-certs:   # Volumen para los certificados SSL
+  nginx-vhost:   # Volumen para la configuración de vhosts
