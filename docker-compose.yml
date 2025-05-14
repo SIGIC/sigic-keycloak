@@ -17,7 +17,6 @@ services:
       - proxy
     environment:
       - DEFAULT_EMAIL=admin@${KC_HOSTNAME}
-      # Estas son las cabeceras adicionales necesarias para Keycloak y otros servicios detrás del proxy
       - VIRTUAL_HOST=${KC_HOSTNAME}
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=${KC_HOSTNAME}
@@ -25,7 +24,11 @@ services:
       - HTTP_X_FORWARDED_FOR=true
       - HTTP_X_FORWARDED_PROTO=true
       - HTTP_X_FORWARDED_PORT=443
-      - HTTP_X_FORWARDED_SSL=true  # Asegura que Keycloak sepa que la conexión es segura
+      - HTTP_X_FORWARDED_SSL=true
+      - NGINX_PROXY_SET_HEADER_X_FORWARDED_PROTO=true
+      - NGINX_PROXY_SET_HEADER_X_FORWARDED_FOR=true
+      - NGINX_PROXY_SET_HEADER_X_FORWARDED_PORT=443
+      - NGINX_PROXY_SET_HEADER_X_FORWARDED_SSL=true
     labels:
       - "traefik.enable=false"
       - "com.github.nginxproxy.nginx-proxy=true"
