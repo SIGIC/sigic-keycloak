@@ -25,6 +25,7 @@ services:
       - "VIRTUAL_PORT=8080"  # Puerto donde Keycloak se está ejecutando
       - "LETSENCRYPT_HOST=${KC_HOSTNAME}"  # Habilita el certificado de Let's Encrypt
       - "LETSENCRYPT_EMAIL=${DEFAULT_EMAIL}"  # Correo de registro para Let's Encrypt
+    user: "root"
 
   acme-companion:
     image: nginxproxy/acme-companion
@@ -42,6 +43,7 @@ services:
       - nginx-vhost:/etc/nginx/vhost.d  # Volumen para la configuración de vhosts
     networks:
       - proxy
+    user: "root"
 
   keycloak:
     build:
