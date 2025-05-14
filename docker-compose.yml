@@ -6,7 +6,7 @@ services:
     environment:
       - DEFAULT_HOST=default
       - PROXY_ADDRESS_FORWARDING=true
-      - HTTPS_METHOD=noredirect
+      - HTTPS_METHOD=redirect
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/certs:/etc/nginx/certs
@@ -40,7 +40,6 @@ services:
     expose:
       - "8080"
     environment:
-      - KC_PROXY=edge
       - KC_DB=postgres
       - KC_DB_URL_HOST=${KC_DB_URL_HOST}
       - KC_DB_URL_DATABASE=${KC_DB_URL_DATABASE}
