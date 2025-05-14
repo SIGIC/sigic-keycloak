@@ -52,7 +52,6 @@ services:
       - KC_PROXY_HEADERS=xforwarded
       - KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT:-true}
       - KC_HTTP_ENABLED=true
-      - KC_HOSTNAME_STRICT=false
       - JAVA_OPTS=${JAVA_OPTS}
       - VIRTUAL_HOST=${KC_HOSTNAME}
       - VIRTUAL_PORT=8080
