@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:alpine
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: acme-companion
+    depends_on:
+      - nginx-proxy
+    restart: unless-stopped
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
+      DEFAULT_EMAIL: admin@${DOMAIN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+    networks:
+      - proxy
+    # Solo se ejecuta si ENABLE_HTTPS=true
+    deploy:
+      replicas: ${ENABLE_HTTPS:-false}
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    command: start --optimized
+    restart: unless-stopped
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_HOSTNAME: ${DOMAIN}
+    expose:
+      - "8080"
+    labels:
+      - "traefik.enable=false"
+      - "com.github.nginxproxy.nginx-proxy=true"
+      - "com.github.nginxproxy.nginx-proxy.nginx_default_host=${DOMAIN}"
+      - "VIRTUAL_HOST=${DOMAIN}"
+      - "VIRTUAL_PORT=8080"
+      - "LETSENCRYPT_HOST=${ENABLE_HTTPS:-false}"
+      - "LETSENCRYPT_HOST=${DOMAIN}"
+    networks:
+      - proxy
+      - internal
+
+  keycloak-db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+volumes:
+  keycloak_data:
+
+networks:
+  internal:
+  proxy:
