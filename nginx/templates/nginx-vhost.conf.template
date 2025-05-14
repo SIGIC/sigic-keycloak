@@ -5,4 +5,4 @@
   # add_header Referrer-Policy "no-referrer-when-downgrade";
   # add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
-  # proxy_cookie_path / "/; Secure; HttpOnly; SameSite=None";
+  proxy_cookie_path / "/; Secure; HttpOnly; SameSite=None";
