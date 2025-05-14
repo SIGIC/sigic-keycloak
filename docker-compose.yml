@@ -43,6 +43,7 @@ services:
     expose:
       - "8080"
     environment:
+      - KC_PROXY=${KC_PROXY:-edge}
       - KC_DB=postgres
       - KC_DB_URL_HOST=${KC_DB_URL_HOST}
       - KC_DB_URL_DATABASE=${KC_DB_URL_DATABASE}
@@ -50,6 +51,7 @@ services:
       - KC_DB_PASSWORD=${KC_DB_PASSWORD}
       - KC_HOSTNAME=${KC_HOSTNAME}
       - KC_PROXY_HEADERS=${KC_PROXY_HEADERS:-xforwarded}
+      - KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT:-true}
       - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
       - JAVA_OPTS=${JAVA_OPTS}
       - VIRTUAL_HOST=${KC_HOSTNAME}
