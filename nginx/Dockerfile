@@ -8,7 +8,7 @@ WORKDIR /etc/nginx/
 RUN mkdir -p /etc/nginx/html &&\
     touch /etc/nginx/html/index.html
 
-ADD nginx.conf.envsubst nginx.https.available.conf.envsubst ./
+ADD ../nginx.conf.envsubst nginx.https.available.conf.envsubst ./
 ADD geonode.conf.envsubst ./sites-enabled/
 
 ADD docker-autoreload.sh docker-entrypoint.sh /
