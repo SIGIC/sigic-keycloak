@@ -6,11 +6,9 @@
 Se necesita crear un archivo .env con las siguientes variables de entorno
 
 ```bash
-# KC_PROXY=edge
 DOMAIN=nombre.de.dominio
 KC_HOSTNAME=nombre.de.dominio
 # KC_HOSTNAME_STRICT=true
-# KC_HOSTNAME_STRICT_HTTPS=true
 KC_PROXY_HEADERS=xforwarded
 KC_HTTP_ENABLED=true
 # KC_BOOTSTRAP_ADMIN_USERNAME=admin
