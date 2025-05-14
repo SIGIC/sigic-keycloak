@@ -6,7 +6,7 @@ services:
     environment:
       - DEFAULT_HOST=default
       - PROXY_ADDRESS_FORWARDING=true
-      - HTTPS_METHOD=redirect
+      - HTTPS_METHOD=noredirect
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/certs:/etc/nginx/certs
