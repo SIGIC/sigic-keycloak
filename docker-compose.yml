@@ -6,9 +6,9 @@ services:
     environment:
       - DEFAULT_HOST=default
       - PROXY_ADDRESS_FORWARDING=true
-      - HTTPS_METHOD=${HTTPS_METHOD:-noredirect}
+      - HTTPS_METHOD=redirect
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/certs:/etc/nginx/certs
       - ./nginx/vhost.d:/etc/nginx/vhost.d
       - ./nginx/html:/usr/share/nginx/html
@@ -46,8 +46,6 @@ services:
       - KC_DB_USERNAME=${KC_DB_USERNAME}
       - KC_DB_PASSWORD=${KC_DB_PASSWORD}
       - KC_HOSTNAME=${KC_HOSTNAME}
-      - KC_HOSTNAME_STRICT=true
-      - KC_PROXY_HEADERS=xforwarded
       - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
       - JAVA_OPTS=${JAVA_OPTS}
       - VIRTUAL_HOST=${KC_HOSTNAME}

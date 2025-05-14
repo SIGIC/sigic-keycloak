@@ -14,6 +14,8 @@ fi
 
 if [ ! -d "./nginx/vhost.d" ]; then
   mkdir -p "./nginx/vhost.d"
+else
+  rm -f "./nginx/vhost.d/*"
 fi
 
 TEMPLATE="./nginx/templates/nginx-vhost.conf.template"
