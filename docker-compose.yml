@@ -1,55 +1,42 @@
 
 services:
-  nginx-proxy:
-    image: nginxproxy/nginx-proxy:alpine
-    container_name: nginx-proxy
-    restart: unless-stopped
+  nginx:
+    image: nginx:${NGINX_VERSION:-latest}
+    environment:
+      KEYCLOAK_DOMAIN: ${KC_HOSTNAME}
+    mem_limit: 100m
+    container_name: nginx
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - nginx-html:/usr/share/nginx/html
-      - nginx-certs:/etc/nginx/certs
-      - nginx-vhost:/etc/nginx/vhost.d
-      - ./nginx/default.headers:/etc/nginx/vhost.d/default.headers:ro
-    networks:
-      - proxy
-    environment:
-      - DEFAULT_EMAIL=admin@${KC_HOSTNAME}
-      - VIRTUAL_HOST=${KC_HOSTNAME}
-      - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=${KC_HOSTNAME}
-      - LETSENCRYPT_EMAIL=admin@${KC_HOSTNAME}
-      - HTTP_X_FORWARDED_FOR=true
-      - HTTP_X_FORWARDED_PROTO=true
-      - HTTP_X_FORWARDED_PORT=443
-      - HTTP_X_FORWARDED_SSL=true
-      - NGINX_PROXY_SET_HEADER_X_FORWARDED_PROTO=true
-      - NGINX_PROXY_SET_HEADER_X_FORWARDED_FOR=true
-      - NGINX_PROXY_SET_HEADER_X_FORWARDED_PORT=443
-      - NGINX_PROXY_SET_HEADER_X_FORWARDED_SSL=true
-    user: "root"
-
-  acme-companion:
-    image: nginxproxy/acme-companion
-    container_name: acme-companion
-    depends_on:
-      - nginx-proxy
+      - 80:80
+      - 443:443
     restart: unless-stopped
-    environment:
-      - NGINX_PROXY_CONTAINER=nginx-proxy
-      - DEFAULT_EMAIL=admin@${KC_HOSTNAME}
-      - ACME_CA_URI=${ACME_CA_URI:-https://acme-v02.api.letsencrypt.org/directory}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - nginx-html:/usr/share/nginx/html
-      - nginx-acme:/etc/acme.sh
-      - nginx-certs:/etc/nginx/certs
-      - nginx-vhost:/etc/nginx/vhost.d
     networks:
-      - proxy
-    user: "root"
+      - local
+  certbot:
+    image: certbot/certbot:${CERTBOT_VERSION:-latest}
+    environment:
+      CERTBOT_LETSENCRYPT_EMAIL: admin@${KC_HOSTNAME}
+      KEYCLOAK_DOMAIN: ${KC_HOSTNAME}
+      PROD: ${PROD:-true}
+    mem_limit: 50m
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: >
+      sh -c "
+        if [ \"$PROD\" = \"true\" ]; then
+          certbot certonly --non-interactive --webroot -w /var/www/certbot --email admin@${KC_HOSTNAME} -d ${KC_HOSTNAME} --agree-tos;      
+        else
+          certbot certonly --staging --non-interactive --webroot -w /var/www/certbot --email admin@${KC_HOSTNAME} -d ${KC_HOSTNAME} --agree-tos;
+        fi
+      "
+    depends_on:
+      - nginx
 
   keycloak:
     build:
