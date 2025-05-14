@@ -15,7 +15,7 @@ services:
       - 443:443
     restart: unless-stopped
     networks:
-      - local
+      - proxy
   certbot:
     image: certbot/certbot:${CERTBOT_VERSION:-latest}
     environment:
