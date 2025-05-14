@@ -34,8 +34,8 @@ services:
     build:
       context: ./keycloak
       dockerfile: Dockerfile
-    # command: start --optimized
-    command: start-dev
+    command: start --optimized
+    # command: start-dev
     restart: unless-stopped
     expose:
       - "8080"
