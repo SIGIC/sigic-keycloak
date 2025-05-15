@@ -1,0 +1,24 @@
+{
+  "alias": "orcid",
+  "displayName": "Login with ORCID",
+  "providerId": "oidc",
+  "enabled": true,
+  "storeToken": true,
+  "addReadTokenRoleOnCreate": false,
+  "trustEmail": true,
+  "linkOnly": false,
+  "firstBrokerLoginFlowAlias": "first broker login",
+  "config": {
+    "useJwksUrl": "true",
+    "clientId": "TU_CLIENT_ID",
+    "clientSecret": "TU_CLIENT_SECRET",
+    "authorizationUrl": "https://orcid.org/oauth/authorize",
+    "tokenUrl": "https://orcid.org/oauth/token",
+    "userInfoUrl": "https://orcid.org/oauth/userinfo",
+    "issuer": "https://orcid.org",
+    "defaultScope": "openid",
+    "syncMode": "IMPORT",
+    "validateSignature": "true",
+    "jwksUrl": "https://orcid.org/oauth/jwks"
+  }
+}
