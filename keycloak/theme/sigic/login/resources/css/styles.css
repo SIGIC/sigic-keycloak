@@ -37,6 +37,8 @@ body[data-perfil='predeterminada'] {
   --color-secundario-1: #FEFAF8;
 
   /* Mapping PatternFly global vars (opcional, mejora integración) */
+  --pf-v5-global--link--Color: var(--color-primario-3);
+  --pf-v5-c-button--m-control--after--BorderBottomColor: var(--color-primario-2);
   --pf-global--primary-color--100: var(--color-primario-3);
   --pf-global--primary-color--dark-100: var(--color-primario-4);
   --pf-global--primary-color--light-100: var(--color-primario-1);
