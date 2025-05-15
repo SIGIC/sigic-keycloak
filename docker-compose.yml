@@ -5,7 +5,6 @@ services:
     container_name: nginx-proxy
     environment:
       - DEFAULT_HOST=default
-      - PROXY_ADDRESS_FORWARDING=true
       - HTTPS_METHOD=${HTTPS_METHOD:-redirect}
       - PROXY_READ_TIMEOUT=360s
       - PROXY_SEND_TIMEOUT=360s
@@ -37,8 +36,8 @@ services:
     build:
       context: ./keycloak
       dockerfile: Dockerfile
-    command: start --optimized
-    # command: start-dev
+    command: start --optimized --proxy=edge
+    # command: start-dev --proxy=edge
     # usar start-dev para desarrollo en lugar de start --optimized
     restart: unless-stopped
     expose:
