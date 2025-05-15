@@ -1,2 +1,2 @@
 # La siguiente línea es para mejorar la seguridad de las cookies
-proxy_cookie_path / "/; Secure; HttpOnly; SameSite=None";
+# proxy_cookie_path / "/; Secure; HttpOnly; SameSite=None";
