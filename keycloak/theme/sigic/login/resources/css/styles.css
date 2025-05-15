@@ -1,7 +1,7 @@
 :root {
     --keycloak-logo-url: url('../img/cyt_logo.png');
     --keycloak-bg-logo-url: url("../img/fondo_aguila.png");
-    --keycloak-logo-height: 120px;
+    --keycloak-logo-height: 63px;
     --keycloak-logo-width: 300px;
     --keycloak-card-top-color: var(--color-primario-3);
     --pf-global--primary-color--100: var(--color-primario-3);
