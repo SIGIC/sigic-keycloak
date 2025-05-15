@@ -40,10 +40,14 @@ body[data-perfil='predeterminada'] {
 
   /* Mapping PatternFly global vars (opcional, mejora integración) */
   --pf-v5-global--link--Color: var(--color-primario-3);
-  --pf-v5-c-button--m-control--after--BorderBottomColor: var(--color-primario-2);
+  --pf-v5-global--link--Color--hover: var(--color-primario-4);
+  --pf-v5-global--active-color--100: var(--color-primario-3);
+
   --pf-global--primary-color--100: var(--color-primario-3);
   --pf-global--primary-color--dark-100: var(--color-primario-4);
   --pf-global--primary-color--light-100: var(--color-primario-1);
+
+  --pf-v5-c-button--m-control--after--BorderBottomColor: var(--color-primario-2);
 }
 
 /* === Fondo general de la página === */
@@ -69,6 +73,7 @@ body.login-pf {
 }
 
 /* === Botón de login === */
+/*
 .pf-c-button.pf-m-primary,
 input[type="submit"] {
   background-color: var(--color-primario-3) !important;
@@ -96,6 +101,7 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: var(--color-primario-4) !important;
 }
+*/
 
 /* === Inputs === */
 input.form-control,
