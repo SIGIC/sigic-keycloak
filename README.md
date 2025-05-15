@@ -25,10 +25,3 @@ KC_DB_URL_DATABASE=x[databasename]x
 # KC_BOOTSTRAP_ADMIN_USERNAME=admin
 # KC_BOOTSTRAP_ADMIN_PASSWORD=admin123
 ```
-
-construir template de nginx:
-
-```bash
-chmod +x generate-nginx-vhost.sh
-./generate-nginx-vhost.sh keycloak.domain.tld
-```bash
