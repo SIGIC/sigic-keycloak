@@ -36,8 +36,8 @@ services:
     build:
       context: ./keycloak
       dockerfile: Dockerfile
-    command: start --optimized --proxy-headers
-    # command: start-dev --proxy-headers
+    command: start --optimized
+    # command: start-dev
     # usar start-dev para desarrollo en lugar de start --optimized
     restart: unless-stopped
     expose:
