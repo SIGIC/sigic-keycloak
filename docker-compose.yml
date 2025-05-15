@@ -5,7 +5,7 @@ services:
     container_name: nginx-proxy
     environment:
       - DEFAULT_HOST=default
-      - PROXY_ADDRESS_FORWARDING=false
+      - PROXY_ADDRESS_FORWARDING=true
       - HTTPS_METHOD=${HTTPS_METHOD:-redirect}
       - PROXY_READ_TIMEOUT=360s
       - PROXY_SEND_TIMEOUT=360s

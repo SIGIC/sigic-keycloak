@@ -2,6 +2,7 @@
 services:
   nginx-proxy:
     image: jwilder/nginx-proxy
+    container_name: nginx-proxy
     environment:
       - DEFAULT_HOST=default
       - PROXY_ADDRESS_FORWARDING=false
@@ -20,6 +21,7 @@ services:
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-letsencrypt
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
     volumes:
@@ -49,8 +51,8 @@ services:
       - KC_PROXY_HEADERS=xforwarded
       - KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT:-true}
       - KC_HTTP_ENABLED=true
-      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      # - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      # - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
       - JAVA_OPTS=${JAVA_OPTS}
       - VIRTUAL_HOST=${KC_HOSTNAME}
       - VIRTUAL_PORT=8080
