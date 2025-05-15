@@ -68,7 +68,34 @@ body.login-pf {
   margin-bottom: 1.5rem;
 }
 
+/* === Botón de login === */
+.pf-c-button.pf-m-primary,
+input[type="submit"] {
+  background-color: var(--color-primario-3) !important;
+  border-color: var(--color-primario-3) !important;
+  color: white !important;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
 
+.pf-c-button.pf-m-primary:hover,
+input[type="submit"]:hover {
+  background-color: var(--color-primario-4) !important;
+}
+
+.pf-c-button.pf-m-primary,
+button[type="submit"] {
+  background-color: var(--color-primario-3) !important;
+  border-color: var(--color-primario-3) !important;
+  color: white !important;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.pf-c-button.pf-m-primary:hover,
+button[type="submit"]:hover {
+  background-color: var(--color-primario-4) !important;
+}
 
 /* === Inputs === */
 input.form-control,
