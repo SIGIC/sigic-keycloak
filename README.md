@@ -52,3 +52,14 @@ docker exec -it sigic-keycloak-keycloak-1 /bin/bash
   --realm master \
   --uusername kadmin \
   --rolename admin
+
+## Extensiones
+
+Hay algunas extensiones incluidas, seleccionadas para cubrir algunas necesidades, éstas se enlistan a continuación:
+
+### keycloak-orcid
+
+[keycloak-orcid](https://github.com/eosc-kc/keycloak-orcid) permite la autenticación de usuarios mediante ORCID, para 
+ello se debe crear una aplicación en el portal de ORCID y obtener el client_id y client_secret. 
+Esta extensión es necesaria debido a que orcid no es del todo estándar y no es suficiente con la configuración de un 
+cliente OIDC, ya que no se puede obtener el userinfo mediante url ni mediante JWT.
