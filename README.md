@@ -26,9 +26,29 @@ KC_DB_URL_DATABASE=x[databasename]x
 # KC_BOOTSTRAP_ADMIN_PASSWORD=admin123
 ```
 
-construir template de nginx:
+Si se genero el usuario usando las variables de entorno KC_BOOTSTRAP_ADMIN_USERNAME y KC_BOOTSTRAP_ADMIN_PASSWORD
+el usuario queda marcado como "temporary", esto no se puede cambiar en la interfaz de usuario, por lo que se debe 
+ejecutar la siguiente consulta para cambiar el valor a null, directo en la base de datos:
 
-```bash
-chmod +x generate-nginx-vhost.sh
-./generate-nginx-vhost.sh keycloak.domain.tld
-```bash
+```sql
+UPDATE user_attribute SET value = false WHERE name = 'is_temporary_admin';
+```
+
+docker exec -it sigic-keycloak-keycloak-1 /bin/bash
+
+/opt/keycloak/bin/kcadm.sh config credentials \
+  --server http://localhost:8080 \
+  --realm master \
+  --user admin \
+  --password TU_CONTRASEÑA
+
+/opt/keycloak/bin/kcadm.sh add-roles \
+  --realm master \
+  --uusername nuevoadmin \
+  --rolename admin
+
+
+/opt/keycloak/bin/kcadm.sh add-roles \
+  --realm master \
+  --uusername kadmin \
+  --rolename admin
