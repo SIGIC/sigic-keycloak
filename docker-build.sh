@@ -1,0 +1,1 @@
+./generate-nginx-vhost.sh; docker compose build --no-cache; docker compose stop; docker compose up -d --remove-orphans; docker system prune -a

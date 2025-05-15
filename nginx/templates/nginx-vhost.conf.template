@@ -1,8 +1,2 @@
-
-  # add_header X-Frame-Options "SAMEORIGIN";
-  # add_header X-XSS-Protection "1; mode=block";
-  # add_header X-Content-Type-Options "nosniff";
-  # add_header Referrer-Policy "no-referrer-when-downgrade";
-  # add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-
-  proxy_cookie_path / "/; Secure; HttpOnly; SameSite=None";
+# La siguiente línea es para mejorar la seguridad de las cookies
+proxy_cookie_path / "/; Secure; HttpOnly; SameSite=None";

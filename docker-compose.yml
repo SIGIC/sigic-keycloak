@@ -59,3 +59,5 @@ services:
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=${KC_HOSTNAME}
       - LETSENCRYPT_EMAIL=admin@${KC_HOSTNAME}
+    depends_on:
+      - nginx-proxy
