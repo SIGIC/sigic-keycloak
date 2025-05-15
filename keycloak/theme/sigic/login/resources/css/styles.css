@@ -1,5 +1,5 @@
 :root {
-    --keycloak-logo-url: url('../img/secihti-logo.png');
+    --keycloak-logo-url: url('../img/cyt_logo.png');
     --keycloak-bg-logo-url: url("../img/fondo_aguila.png");
     --keycloak-logo-height: 120px;
     --keycloak-logo-width: 300px;
@@ -83,8 +83,7 @@ input[type="submit"]:hover {
 input.form-control,
 input[type="text"],
 input[type="password"] {
-  border-radius: 6px;
-  border: 1px solid var(--color-secundario-7);
+  border: 1px solid var(--color-secundario-8);
   padding: 0.5rem;
 }
 
