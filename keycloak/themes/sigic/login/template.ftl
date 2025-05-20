@@ -50,6 +50,7 @@
             <link href="${url.resourcesPath}/${style}" rel="stylesheet" />
         </#list>
     </#if>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/CentroGeo/sisdai-css@v1.9.0/dist/sisdai.min.css">
     <script type="importmap">
         {
             "imports": {
@@ -136,12 +137,16 @@
 <div class="${properties.kcLogin!}">
   <div class="${properties.kcLoginContainer!}">
     <header id="kc-header" class="pf-v5-c-login__header">
-      <div id="kc-header-wrapper"
-              class="pf-v5-c-brand">${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</div>
+      <div id="kc-header-wrapper" class="pf-v5-c-brand">
+        ${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}
+      </div>
     </header>
+
     <main class="${properties.kcLoginMain!}">
       <div class="${properties.kcLoginMainHeader!}">
-        <h1 class="${properties.kcLoginMainTitle!}" id="kc-page-title"><#nested "header"></h1>
+        <h1 class="${properties.kcLoginMainTitle!}" id="kc-page-title">
+          <#nested "header">
+        </h1>
         <#if realm.internationalizationEnabled  && locale.supported?size gt 1>
         <div class="${properties.kcLoginMainHeaderUtilities!}">
           <div class="${properties.kcInputClass!}">
@@ -181,80 +186,84 @@
         </div>
         </#if>
       </div>
+
       <div class="${properties.kcLoginMainBody!}">
         <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
-            <#if displayRequiredFields>
-                <div class="${properties.kcContentWrapperClass!}">
-                    <div class="${properties.kcLabelWrapperClass!} subtitle">
-                        <span class="${properties.kcInputHelperTextItemTextClass!}">
-                          <span class="${properties.kcInputRequiredClass!}">*</span> ${msg("requiredFields")}
-                        </span>
-                    </div>
-                </div>
-            </#if>
+          <#if displayRequiredFields>
+            <div class="${properties.kcContentWrapperClass!}">
+              <div class="${properties.kcLabelWrapperClass!} subtitle">
+                <span class="${properties.kcInputHelperTextItemTextClass!}">
+                  <span class="${properties.kcInputRequiredClass!}">*</span> ${msg("requiredFields")}
+                </span>
+              </div>
+            </div>
+          </#if>
         <#else>
-            <#if displayRequiredFields>
-                <div class="${properties.kcContentWrapperClass!}">
-                    <div class="${properties.kcLabelWrapperClass!} subtitle">
-                        <span class="${properties.kcInputHelperTextItemTextClass!}">
-                          <span class="${properties.kcInputRequiredClass!}">*</span> ${msg("requiredFields")}
-                        </span>
-                    </div>
-                    <div class="${properties.kcFormClass} ${properties.kcContentWrapperClass}">
-                        <#nested "show-username">
-                        <@username />
-                    </div>
-                </div>
-            <#else>
-                <div class="${properties.kcFormClass} ${properties.kcContentWrapperClass}">
-                  <#nested "show-username">
-                  <@username />
-                </div>
-            </#if>
+          <#if displayRequiredFields>
+            <div class="${properties.kcContentWrapperClass!}">
+              <div class="${properties.kcLabelWrapperClass!} subtitle">
+                <span class="${properties.kcInputHelperTextItemTextClass!}">
+                  <span class="${properties.kcInputRequiredClass!}">*</span> ${msg("requiredFields")}
+                </span>
+              </div>
+              <div class="${properties.kcFormClass} ${properties.kcContentWrapperClass}">
+                <#nested "show-username">
+                <@username />
+              </div>
+            </div>
+          <#else>
+            <div class="${properties.kcFormClass} ${properties.kcContentWrapperClass}">
+              <#nested "show-username">
+              <@username />
+            </div>
+          </#if>
         </#if>
 
         <#-- App-initiated actions should not see warning messages about the need to complete the action -->
         <#-- during login.                                                                               -->
         <#if displayMessage && message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-            <div class="${properties.kcAlertClass!} pf-m-${(message.type = 'error')?then('danger', message.type)}">
-                <div class="${properties.kcAlertIconClass!}">
-                    <#if message.type = 'success'><span class="${properties.kcFeedbackSuccessIcon!}"></span></#if>
-                    <#if message.type = 'warning'><span class="${properties.kcFeedbackWarningIcon!}"></span></#if>
-                    <#if message.type = 'error'><span class="${properties.kcFeedbackErrorIcon!}"></span></#if>
-                    <#if message.type = 'info'><span class="${properties.kcFeedbackInfoIcon!}"></span></#if>
-                </div>
-                <span class="${properties.kcAlertTitleClass!} kc-feedback-text">${kcSanitize(message.summary)?no_esc}</span>
+          <div class="${properties.kcAlertClass!} pf-m-${(message.type = 'error')?then('danger', message.type)}">
+            <div class="${properties.kcAlertIconClass!}">
+              <#if message.type = 'success'><span class="${properties.kcFeedbackSuccessIcon!}"></span></#if>
+              <#if message.type = 'warning'><span class="${properties.kcFeedbackWarningIcon!}"></span></#if>
+              <#if message.type = 'error'><span class="${properties.kcFeedbackErrorIcon!}"></span></#if>
+              <#if message.type = 'info'><span class="${properties.kcFeedbackInfoIcon!}"></span></#if>
             </div>
+            <span class="${properties.kcAlertTitleClass!} kc-feedback-text">${kcSanitize(message.summary)?no_esc}</span>
+          </div>
         </#if>
 
         <#nested "form">
 
         <#if auth?has_content && auth.showTryAnotherWayLink()>
           <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post" novalidate="novalidate">
-              <input type="hidden" name="tryAnotherWay" value="on"/>
-              <a id="try-another-way" href="javascript:document.forms['kc-select-try-another-way-form'].requestSubmit()"
-                  class="${properties.kcButtonSecondaryClass} ${properties.kcButtonBlockClass} ${properties.kcMarginTopClass}">
-                    ${kcSanitize(msg("doTryAnotherWay"))?no_esc}
-              </a>
+            <input type="hidden" name="tryAnotherWay" value="on"/>
+            <a 
+              id="try-another-way"
+              href="javascript:document.forms['kc-select-try-another-way-form'].requestSubmit()"
+              class="${properties.kcButtonSecondaryClass} ${properties.kcButtonBlockClass} ${properties.kcMarginTopClass}"
+            >
+              ${kcSanitize(msg("doTryAnotherWay"))?no_esc}
+            </a>
           </form>
         </#if>
 
-          <div class="${properties.kcLoginMainFooter!}">
-              <#nested "socialProviders">
+        <div class="${properties.kcLoginMainFooter!}">
+          <#nested "socialProviders">
 
-              <#if displayInfo>
-                  <div id="kc-info" class="${properties.kcLoginMainFooterBand!} ${properties.kcFormClass}">
-                      <div id="kc-info-wrapper" class="${properties.kcLoginMainFooterBandItem!}">
-                          <#nested "info">
-                      </div>
-                  </div>
-              </#if>
-          </div>
+          <#if displayInfo>
+            <div id="kc-info" class="${properties.kcLoginMainFooterBand!} ${properties.kcFormClass}">
+              <div id="kc-info-wrapper" class="${properties.kcLoginMainFooterBandItem!}">
+                <#nested "info">
+              </div>
+            </div>
+          </#if>
+        </div>
       </div>
 
-        <div class="${properties.kcLoginMainFooter!}">
-            <@loginFooter.content/>
-        </div>
+      <div class="${properties.kcLoginMainFooter!}">
+        <@loginFooter.content/>
+      </div>
     </main>
   </div>
 </div>
