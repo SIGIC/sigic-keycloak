@@ -1,6 +1,7 @@
 <#macro actionGroup horizontal=false>
   <div class="${properties.kcFormGroupClass}">
-    <div class="${properties.kcFormActionGroupClass} <#if horizontal>pf-v5-u-flex-nowrap<#else>pf-v5-u-flex-wrap</#if>">
+    <#--  <div class="${properties.kcFormActionGroupClass} <#if horizontal>pf-v5-u-flex-nowrap<#else>pf-v5-u-flex-wrap</#if>">  -->
+    <div class="${properties.kcFormActionGroupClass}">
       <#nested>
     </div>
   </div>

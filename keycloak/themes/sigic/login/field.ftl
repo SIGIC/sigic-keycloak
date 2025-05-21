@@ -103,18 +103,18 @@
 
 <#macro checkbox name label value=false required=false>
   <div class="${properties.kcCheckboxClass}">
+    <input
+      class="${properties.kcCheckboxInputClass}"
+      type="checkbox"
+      id="${name}"
+      name="${name}"
+      <#if value>checked</#if>
+    />
     <label for="${name}" class="${properties.kcCheckboxClass}">
-      <input
-        class="${properties.kcCheckboxInputClass}"
-        type="checkbox"
-        id="${name}"
-        name="${name}"
-        <#if value>checked</#if>
-      />
       <span class="${properties.kcCheckboxLabelClass}">${label}</span>
-      <#if required>
+      <#--  <#if required>
         <span class="${properties.kcCheckboxLabelRequiredClass}" aria-hidden="true">&#42;</span>
-      </#if>
+      </#if>  -->
     </label>
   </div>
 </#macro>
