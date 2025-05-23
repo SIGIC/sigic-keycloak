@@ -30,6 +30,23 @@ div.kc-logo-text span {
   width: 20rem;
 }
 
+.kc-input-group {
+  display: flex;
+  width: 100%;
+}
+.kc-input-group-item.kc-fill {
+  flex: 1;
+}
+.kc-input-group-item input {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.kc-form-password-visibility-button {
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+}
+
 .kc-button-block {
   display: block;
   width: 100%;

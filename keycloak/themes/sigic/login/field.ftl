@@ -6,9 +6,9 @@
       <span class="${properties.kcFormLabelTextClass}">
         ${label}
       </span>
-      <#--  <#if required>
+      <#if required>
         <span class="${properties.kcInputRequiredClass}" aria-hidden="true">&#42;</span>
-      </#if>  -->
+      </#if>
     </label>
   </div>
 
@@ -75,14 +75,21 @@
           <@errorIcon error=error/>
         </span>
       </div>
-      <#--  <div class="${properties.kcInputGroupItemClass}">
-        <button class="${properties.kcFormPasswordVisibilityButtonClass}" type="button" aria-label="${msg('showPassword')}"
-                aria-controls="${name}" data-password-toggle
-                data-icon-show="fa-eye fas" data-icon-hide="fa-eye-slash fas"
-                data-label-show="${msg('showPassword')}" data-label-hide="${msg('hidePassword')}">
-            <i class="fa-eye fas" aria-hidden="true"></i>
+      <div class="${properties.kcInputGroupItemClass}">
+        <button
+          class="${properties.kcFormPasswordVisibilityButtonClass}"
+          type="button"
+          aria-label="${msg('showPassword')}"
+          aria-controls="${name}"
+          data-password-toggle
+          data-icon-show="pictograma-ojo-ver"
+          data-icon-hide="pictograma-ojo-ocultar"
+          data-label-show="${msg('showPassword')}"
+          data-label-hide="${msg('hidePassword')}"
+        >
+          <i class="pictograma-ojo-ver" aria-hidden="true"></i>
         </button>
-      </div>  -->
+      </div>
     </div>
     <div class="${properties.kcFormHelperTextClass}" aria-live="polite">
         <div class="${properties.kcInputHelperTextClass}">
@@ -112,9 +119,9 @@
     />
     <label for="${name}" class="${properties.kcCheckboxClass}">
       <span class="${properties.kcCheckboxLabelClass}">${label}</span>
-      <#--  <#if required>
+      <#if required>
         <span class="${properties.kcCheckboxLabelRequiredClass}" aria-hidden="true">&#42;</span>
-      </#if>  -->
+      </#if>
     </label>
   </div>
 </#macro>
