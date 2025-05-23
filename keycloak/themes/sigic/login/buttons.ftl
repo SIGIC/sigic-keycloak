@@ -1,16 +1,23 @@
 <#macro actionGroup horizontal=false>
   <div class="${properties.kcFormGroupClass}">
-    <#--  <div class="${properties.kcFormActionGroupClass} <#if horizontal>pf-v5-u-flex-nowrap<#else>pf-v5-u-flex-wrap</#if>">  -->
-    <div class="${properties.kcFormActionGroupClass}">
+    <div
+      class="${properties.kcFormActionGroupClass} <#if horizontal>pf-v5-u-flex-nowrap<#else>pf-v5-u-flex-wrap</#if>"
+      style="flex-wrap: <#if horizontal>nowrap<#else>wrap</#if> !important;"
+    >
       <#nested>
     </div>
   </div>
 </#macro>
 
 <#macro button label id="" name="" class=["kcButtonPrimaryClass"] extra...>
-  <button class="<#list class as c>${properties[c]} </#list>" name="${name}" id="${id}"
-          type="submit" <#list extra as attrName, attrVal>${attrName}="${attrVal}"</#list>>
-  ${kcSanitize(msg(label))?no_esc}
+  <button
+    class="<#list class as c>${properties[c]} </#list>"
+    name="${name}"
+    id="${id}"
+    type="submit"
+    <#list extra as attrName, attrVal>${attrName}="${attrVal}"</#list>
+  >
+    ${kcSanitize(msg(label))?no_esc}
   </button>
 </#macro>
 

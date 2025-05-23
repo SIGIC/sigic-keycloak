@@ -1,7 +1,26 @@
+:root {
+  --keycloak-logo-url: url('../img/cyt_logo.png');
+  --keycloak-bg-logo-url: url("../img/fondo_gris.jpg");
+  --keycloak-logo-height: 63px;
+  --keycloak-logo-width: 300px;
+}
+
 body {
-  background: url('/img/fondo_gris.jpg') no-repeat center center fixed;
-  background-size: cover;
+  background: var(--keycloak-bg-logo-url) no-repeat center center fixed !important;
+  background-size: cover !important;
   height: 100%;
+}
+
+div.kc-logo-text {
+    background-image: var(--keycloak-logo-url);
+    height: var(--keycloak-logo-height);
+    width: var(--keycloak-logo-width);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0 auto;
+}
+div.kc-logo-text span {
+    display: none;
 }
 
 .login-keycloak {
@@ -9,6 +28,15 @@ body {
 }
 .login-keycloak header img {
   width: 20rem;
+}
+
+.kc-button-block {
+  display: block;
+  width: 100%;
+}
+input[type="button"], input[type="submit"], input[type="reset"], .boton.boton-chico {
+  font-size: .875rem !important;
+  padding: 8px !important;
 }
 
 .provides-social-account-list {

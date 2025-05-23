@@ -143,51 +143,54 @@
     </header>
 
     <main class="${properties.kcLoginMain!}">
-      <div class="${properties.kcLoginMainHeader!}">
-        <h1 class="${properties.kcLoginMainTitle!}" id="kc-page-title">
-          <#nested "header">
-        </h1>
-        <#if realm.internationalizationEnabled  && locale.supported?size gt 1>
-        <div class="${properties.kcLoginMainHeaderUtilities!}">
-          <div class="${properties.kcInputClass!}">
-            <select
-              aria-label="${msg("languages")}"
-              id="login-select-toggle"
-              onchange="if (this.value) window.location.href=this.value"
-            >
-              <#list locale.supported?sort_by("label") as l>
-                <option
-                  value="${l.url}"
-                  ${(l.languageTag == locale.currentLanguageTag)?then('selected','')}
-                >
-                  ${l.label}
-                </option>
-              </#list>
-            </select>
-            <span class="${properties.kcFormControlUtilClass}">
-              <span class="${properties.kcFormControlToggleIcon!}">
-                <svg
-                  class="pf-v5-svg"
-                  viewBox="0 0 320 512"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  role="img"
-                  width="1em"
-                  height="1em"
-                >
-                  <path
-                    d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
-                  >
-                  </path>
-                </svg>
-              </span>
-            </span>
-          </div>
-        </div>
-        </#if>
-      </div>
+      <div class="${properties.kcLoginMainHeader!}"></div>
 
       <div class="${properties.kcLoginMainBody!}">
+        <div class="grid">
+          <h1 class="${properties.kcLoginMainTitle!}" id="kc-page-title">
+            <#nested "header">
+          </h1>
+
+          <#if realm.internationalizationEnabled  && locale.supported?size gt 1>
+            <div class="${properties.kcLoginMainHeaderUtilities!}">
+              <div class="${properties.kcInputClass!}">
+                <select
+                  aria-label="${msg("languages")}"
+                  id="login-select-toggle"
+                  onchange="if (this.value) window.location.href=this.value"
+                >
+                  <#list locale.supported?sort_by("label") as l>
+                    <option
+                      value="${l.url}"
+                      ${(l.languageTag == locale.currentLanguageTag)?then('selected','')}
+                    >
+                      ${l.label}
+                    </option>
+                  </#list>
+                </select>
+
+                <#--  <span class="${properties.kcFormControlUtilClass}">
+                  <span class="${properties.kcFormControlToggleIcon!}">
+                    <svg
+                      class="pf-v5-svg"
+                      viewBox="0 0 320 512"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      role="img"
+                      width="1em"
+                      height="1em"
+                    >
+                      <path
+                        d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+                      />
+                    </svg>
+                  </span>
+                </span>  -->
+              </div>
+            </div>
+          </#if>
+        </div>
+
         <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
           <#if displayRequiredFields>
             <div class="${properties.kcContentWrapperClass!}">
@@ -206,6 +209,7 @@
                   <span class="${properties.kcInputRequiredClass!}">*</span> ${msg("requiredFields")}
                 </span>
               </div>
+              
               <div class="${properties.kcFormClass} ${properties.kcContentWrapperClass}">
                 <#nested "show-username">
                 <@username />
@@ -222,7 +226,13 @@
         <#-- App-initiated actions should not see warning messages about the need to complete the action -->
         <#-- during login.                                                                               -->
         <#if displayMessage && message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-          <div class="${properties.kcAlertClass!} pf-m-${(message.type = 'error')?then('danger', message.type)}">
+          <div
+            class="
+              ${properties.kcAlertClass!}
+              fondo-color-${(message.type = 'success')?then('confirmacion', (message.type = 'warning')?then('alerta', (message.type = 'info')?then('informacion', message.type)))}
+              borde-color-${(message.type = 'success')?then('confirmacion', (message.type = 'warning')?then('alerta', (message.type = 'info')?then('informacion', message.type)))}
+            "
+          >
             <div class="${properties.kcAlertIconClass!}">
               <#if message.type = 'success'><span class="${properties.kcFeedbackSuccessIcon!}"></span></#if>
               <#if message.type = 'warning'><span class="${properties.kcFeedbackWarningIcon!}"></span></#if>
