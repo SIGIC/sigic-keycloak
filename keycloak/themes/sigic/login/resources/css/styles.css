@@ -2,13 +2,16 @@
   --keycloak-logo-url: url('../img/cyt_logo.png');
   --keycloak-bg-logo-url: url("../img/fondo_gris.jpg");
   --keycloak-logo-height: 63px;
-  --keycloak-logo-width: 300px;
+  --keycloak-logo-width: 20rem;
 }
 
 body {
   background: var(--keycloak-bg-logo-url) no-repeat center center fixed !important;
   background-size: cover !important;
-  height: 100%;
+}
+.kc-login {
+  align-items: center;
+  min-height: 100vh;
 }
 
 div.kc-logo-text {
@@ -23,11 +26,12 @@ div.kc-logo-text span {
     display: none;
 }
 
-.login-keycloak {
+.kc-login .contenedor {
   max-width: 35rem !important;
+  align-items: center;
 }
-.login-keycloak header img {
-  width: 20rem;
+.kc-login main {
+  min-height: auto;
 }
 
 .kc-input-group {
