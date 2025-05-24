@@ -3,6 +3,7 @@ services:
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
+    restart: unless-stopped
     environment:
       - DEFAULT_HOST=default
       - HTTPS_METHOD=${HTTPS_METHOD:-redirect}
@@ -22,6 +23,7 @@ services:
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: nginx-letsencrypt
+    restart: unless-stopped
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
     volumes:
