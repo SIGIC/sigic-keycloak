@@ -1,0 +1,2 @@
+import{jsxs as u,jsx as r}from"react/jsx-runtime";import{n as c}from"./main-Dml5vH_M.js";import{F as l,b}from"./FormAccess-Dgk035ov.js";import{K as p}from"./KeyValueInput-CataZRq4.js";const S=({form:o,reset:e,save:t,fineGrainedAccess:s,name:i="attributes",isDisabled:m=!1})=>{const n=!t&&!e,{handleSubmit:a}=o;return u(l,{role:"manage-realm",onSubmit:t?a(t):void 0,fineGrainedAccess:s,children:[r(c,{...o,children:r(p,{name:i,isDisabled:m})}),!n&&r(b,{name:"attributes",reset:e,isSubmit:!0})]})};export{S as A};
+//# sourceMappingURL=AttributeForm-yvG_5yiW.js.map
