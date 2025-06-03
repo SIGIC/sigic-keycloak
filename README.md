@@ -12,7 +12,6 @@ para poder generar el primer certificado ssl de letsencrypt.
 las variables KC_BOOTSTRAP_ADMIN_USERNAME y KC_BOOTSTRAP_ADMIN_PASSWORD solo deben 
 definirse en el primer inicio y son necesarias para generar el usuario y password inicial
 
-
 ```bash
 KC_HOSTNAME=iam.nombre.de.dominio
 JAVA_OPTS=-Xms512m -Xmx1024m
