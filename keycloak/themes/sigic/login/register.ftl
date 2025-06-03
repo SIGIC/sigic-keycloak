@@ -41,8 +41,13 @@
                     }
                 </script>
                 <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
-                    <button class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!} g-recaptcha"
-                            data-sitekey="${recaptchaSiteKey}" data-callback="onSubmitRecaptcha" data-action="${recaptchaAction}" type="submit">
+                    <button
+                        class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!} g-recaptcha"
+                        data-sitekey="${recaptchaSiteKey}"
+                        data-callback="onSubmitRecaptcha"
+                        data-action="${recaptchaAction}"
+                        type="submit"
+                    >
                         ${msg("doRegister")}
                     </button>
                 </div>
@@ -52,7 +57,7 @@
                 </div>
             </#if>
 
-            <div class="${properties.kcFormGroupClass!} pf-v5-c-login__main-footer-band">
+            <div class="${properties.kcFormGroupClass!} ${properties.kcLoginMainFooterBand!}">
                 <div id="kc-form-options" class="${properties.kcFormOptionsClass!} pf-v5-c-login__main-footer-band-item">
                     <div class="${properties.kcFormOptionsWrapperClass!}">
                         <span><a href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a></span>
