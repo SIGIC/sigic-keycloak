@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:26.2.4
+FROM quay.io/keycloak/keycloak:26.2.5
 
 USER root
 ENV JAVA_OPTS="-Xmx2G -Xms1G"
