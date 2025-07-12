@@ -22,7 +22,7 @@ jobs:
         id: vars
         run: |
           echo "owner=sigic" >> $GITHUB_OUTPUT
-          echo "image=keycloak" >> $GITHUB_OUTPUT
+          echo "image=sigic-keycloak" >> $GITHUB_OUTPUT
           echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
