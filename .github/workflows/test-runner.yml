@@ -1,0 +1,13 @@
+name: Runner Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  say-hello:
+    runs-on: [self-hosted, keycloak]
+    steps:
+      - name: Echo test
+        run: echo "Hola desde el runner en la VM"
