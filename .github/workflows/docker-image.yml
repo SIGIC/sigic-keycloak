@@ -1,24 +1,28 @@
-name: Build and Push Keycloak Image to GHCR
+name: CI/CD - Build & Deploy Keycloak
 
 on:
   push:
     branches:
+      - dev
       - main
-      - dev  # puedes agregar otras ramas si quieres
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
+  build:
+    name: Build Keycloak image
+    runs-on: [self-hosted, build, keycloak]
 
     permissions:
       packages: write
       contents: read
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set environment variables
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Set variables
         id: vars
         run: |
           echo "owner=sigic" >> $GITHUB_OUTPUT
@@ -26,18 +30,43 @@ jobs:
           echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
-      - name: Log in to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Build the Docker image with multiple tags
+      - name: Build & tag Docker image
         run: |
-          docker build -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.branch }} \
-                       -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha }} \
-                       -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:latest \
-                       -f ./keycloak/Dockerfile ./keycloak
+          docker build \
+            -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.branch }} \
+            -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha }} \
+            -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:latest \
+            -f ./keycloak/Dockerfile ./keycloak
 
-      - name: Push all image tags
+      - name: Push image
         run: |
           docker push ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.branch }}
           docker push ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha }}
           docker push ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:latest
+
+  deploy:
+    name: Deploy to server
+    needs: build
+    runs-on: ${{ github.ref == 'refs/heads/main' && fromJSON('["self-hosted","deploy-main","keycloak"]') || fromJSON('["self-hosted","deploy-dev","keycloak"]') }}
+
+    steps:
+      - name: Set variables
+        id: vars
+        run: |
+          echo "owner=sigic" >> $GITHUB_OUTPUT
+          echo "image=sigic-keycloak" >> $GITHUB_OUTPUT
+          echo "branch=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
+      - name: Docker login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Pull and run container
+        run: |
+          docker pull ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.branch }}
+
+          docker stop sigic-keycloak || true
+          docker rm sigic-keycloak || true
+
+          docker run -d --name sigic-keycloak \
+            -p 8080:8080 \
+            ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.branch }}
