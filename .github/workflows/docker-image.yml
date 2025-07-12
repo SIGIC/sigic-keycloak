@@ -2,11 +2,13 @@ name: Build and Push Keycloak Image to GHCR
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - dev  # puedes agregar otras ramas si quieres
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest  # o self-hosted si lo prefieres
+    runs-on: ubuntu-latest
 
     permissions:
       packages: write
@@ -16,14 +18,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to GitHub Container Registry
+      - name: Set environment variables
+        id: vars
+        run: |
+          echo "owner=sigic" >> $GITHUB_OUTPUT
+          echo "image=keycloak" >> $GITHUB_OUTPUT
+          echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          echo "branch=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
+      - name: Log in to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build the Docker image
+      - name: Build the Docker image with multiple tags
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/keycloak:latest \
+          docker build -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.branch }} \
+                       -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha }} \
+                       -t ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:latest \
                        -f ./keycloak/Dockerfile ./keycloak
 
-      - name: Push the image to GHCR
+      - name: Push all image tags
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/keycloak:latest
+          docker push ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.branch }}
+          docker push ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha }}
+          docker push ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:latest
