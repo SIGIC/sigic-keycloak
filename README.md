@@ -9,7 +9,7 @@ valores adecuados de conexión a la base de datos, las opciones de java son opci
 HTTPS_METHOD=noredirect es necesario descomentarlo para ejecutar solo la primera vez 
 para poder generar el primer certificado ssl de letsencrypt. 
 
-las variables KC_BOOTSTRAP_ADMIN_USERNAME y KC_BOOTSTRAP_ADMIN_PASSWORD solo deben 
+Las variables KC_BOOTSTRAP_ADMIN_USERNAME y KC_BOOTSTRAP_ADMIN_PASSWORD solo deben 
 definirse en el primer inicio y son necesarias para generar el usuario y password inicial
 
 ```bash
@@ -20,7 +20,6 @@ KC_DB_PASSWORD=x[password]x
 KC_DB=postgres
 KC_DB_URL_HOST=x[postgreshost]x
 KC_DB_URL_DATABASE=x[databasename]x
-# HTTPS_METHOD=noredirect
 # KC_BOOTSTRAP_ADMIN_USERNAME=admin
 # KC_BOOTSTRAP_ADMIN_PASSWORD=admin123
 ```
