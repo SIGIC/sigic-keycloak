@@ -16,7 +16,7 @@ services:
       - KC_DB_PASSWORD=${KC_DB_PASSWORD}
       - KC_HOSTNAME=${KC_HOSTNAME}
       - KC_PROXY_HEADERS=xforwarded
-      - KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT:-true}
+      - KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT}
       - KC_HTTP_ENABLED=true
       # las siguientes variables solo deben usarse si no se ha creado el usuario admin, en condiciones normales no son necesarias
       # - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}

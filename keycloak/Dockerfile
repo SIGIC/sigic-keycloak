@@ -1,8 +1,13 @@
 FROM quay.io/keycloak/keycloak:26.2.5
 
 USER root
-ENV JAVA_OPTS="-Xmx2G -Xms1G"
-ENV KC_DB=postgres
+ARG JAVA_OPTS="-Xmx2G -Xms1G"
+ARG KC_DB=postgres
+ARG KC_HOSTNAME_STRICT=true
+
+ENV JAVA_OPTS=${JAVA_OPTS}
+ENV KC_DB=${KC_DB}
+ENV KC_HOSTNAME_STRICT=${KC_HOSTNAME_STRICT}
 
 # Copia el themes personalizado al directorio de temas
 COPY themes/sigic /opt/keycloak/themes/sigic
