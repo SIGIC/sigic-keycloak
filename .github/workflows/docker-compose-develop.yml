@@ -67,7 +67,9 @@ jobs:
           sed -i "s|ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:.*|ghcr.io/${{ steps.vars.outputs.owner }}/${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha }}|g" docker-compose-ghcr.yml
 
       - name: Docker Compose up
-        run: docker compose -f docker-compose-ghcr.yml up -d
+        run: |
+          docker compose down
+          docker compose -f docker-compose-ghcr.yml up -d
         env:
           KC_DB_URL_HOST: ${{ secrets.KC_DB_URL_HOST }}
           KC_DB_URL_DATABASE: ${{ secrets.KC_DB_URL_DATABASE }}
