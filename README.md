@@ -24,7 +24,7 @@ KC_DB_URL_DATABASE=x[databasename]x
 # KC_BOOTSTRAP_ADMIN_PASSWORD=admin123
 ```
 
-Si se genero el usuario usando las variables de entorno KC_BOOTSTRAP_ADMIN_USERNAME y KC_BOOTSTRAP_ADMIN_PASSWORD
+Si se generó el usuario usando las variables de entorno KC_BOOTSTRAP_ADMIN_USERNAME y KC_BOOTSTRAP_ADMIN_PASSWORD
 el usuario queda marcado como "temporary", esto no se puede cambiar en la interfaz de usuario, por lo que se debe 
 ejecutar la siguiente consulta para cambiar el valor a null, directo en la base de datos:
 
